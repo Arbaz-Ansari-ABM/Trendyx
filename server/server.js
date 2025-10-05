@@ -40,11 +40,19 @@ app.use(
         process.env.FRONTEND_URL, // Production URL from environment variable
       ].filter(Boolean);
 
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+      // Check for exact matches first
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+
+      // Check for Netlify domains using regex
+      const netlifyRegex = /\.netlify\.app$/;
+      if (netlifyRegex.test(origin)) {
+        return callback(null, true);
+      }
+
+      // If no match found, reject
+      callback(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
