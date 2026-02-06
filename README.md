@@ -39,9 +39,9 @@ npm run dev
 # Frontend (new terminal)
 cd client && npm install
 npm run dev
+
 🔑 Environment Variables
-env
-Copy
+
 MONGODB_URI=your_mongodb_uri
 JWT_SECRET=your_secret_key
 STRIPE_SECRET_KEY=sk_test_...
@@ -50,6 +50,7 @@ CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 PORT=5000
+
 📁 Project Structure
 Copy
 Trendyx/
@@ -65,14 +66,17 @@ Trendyx/
 │   ├── routes/
 │   └── server.js
 └── README.md
+
 🌐 Deployment
-Table
-Copy
+
 Frontend	Backend	Database
 Vercel / Netlify	Render / Railway	MongoDB Atlas
+
 👤 Developer
 Arbaz Ahmad Ansari
+
 📧 arbazahmadansari03@gmail.com
 🎓 MCA Student, Galgotias University
 💻 MERN Stack Developer
+
 Built with ❤️ using React, Node.js & MongoDB
