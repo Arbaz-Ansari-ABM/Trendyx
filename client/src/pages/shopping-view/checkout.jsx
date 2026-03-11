@@ -20,7 +20,6 @@ function ShoppingCheckout() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  console.log(currentSelectedAddress, "cartItems");
 
   const totalCartAmount =
     cartItems && cartItems.items && cartItems.items.length > 0
@@ -86,7 +85,6 @@ function ShoppingCheckout() {
 
     setIsPaymemntStart(true);
     dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "order creation");
       if (data?.payload?.success) {
         setShowPaymentForm(true);
         toast({
