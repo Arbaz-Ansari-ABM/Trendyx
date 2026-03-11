@@ -4,7 +4,7 @@ Code
 Preview
 # Trendyx - Full Stack E-commerce Platform
 
-link for demo : trendxs.netlify.app
+link for demo : https://trendxs.netlify.app
 
 A modern MERN stack e-commerce platform with secure payments, admin dashboard, and responsive design.
 
