@@ -31,11 +31,12 @@ const PORT = process.env.PORT || 5000;
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (mobile apps, etc.)
+      // Allow requests with no origin (mobile apps, curl, etc.)
       if (!origin) return callback(null, true);
 
       const allowedOrigins = [
         "http://localhost:5173", // Local development
+        "http://localhost:5174", // Local development (alternate port)
         "http://localhost:3000", // Alternative local port
         process.env.FRONTEND_URL, // Production URL from environment variable
       ].filter(Boolean);
@@ -51,10 +52,16 @@ app.use(
         return callback(null, true);
       }
 
+      // Check for Vercel domains using regex (includes preview/branch deployments)
+      const vercelRegex = /\.vercel\.app$/;
+      if (vercelRegex.test(origin)) {
+        return callback(null, true);
+      }
+
       // If no match found, reject
       callback(new Error("Not allowed by CORS"));
     },
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
       "Authorization",
@@ -63,11 +70,19 @@ app.use(
       "Pragma",
     ],
     credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 
 app.use(cookieParser());
 app.use(express.json());
+
+// Root route for health check
+app.get("/", (req, res) => {
+  res.json({ message: "Trendyx API is running", status: "ok" });
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/admin/products", adminProductsRouter);
 app.use("/api/admin/orders", adminOrderRouter);
@@ -82,4 +97,10 @@ app.use("/api/shop/search", shopSearchRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
 
-app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+// For local development
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+}
+
+// Export app for Vercel serverless deployment
+module.exports = app;
